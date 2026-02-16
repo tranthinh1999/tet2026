@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Tết 2026 ❤️</title>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    font-family:'Segoe UI', sans-serif;
+    background:linear-gradient(135deg,#d4145a,#fbb03b);
+    color:white;
+}
+
+canvas{
+    position:absolute;
+    top:0;
+    left:0;
+}
+
+.slider{
+    position:relative;
+    width:100%;
+    height:100vh;
+    z-index:2;
+}
+
+.slide{
+    position:absolute;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+    opacity:0;
+    transition:opacity 1.5s ease-in-out;
+}
+
+.slide.active{
+    opacity:1;
+}
+
+h1{
+    font-size:45px;
+    margin-bottom:20px;
+}
+
+p{
+    font-size:24px;
+    width:70%;
+}
+
+.heart{
+    position:absolute;
+    color:#ffdde1;
+    animation:floatUp 6s linear infinite;
+    z-index:1;
+}
+
+@keyframes floatUp{
+    from{transform:translateY(100vh); opacity:1;}
+    to{transform:translateY(-10vh); opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="fireworks"></canvas>
+
+<div class="slider">
+    <div class="slide active">
+        <h1>🎉 Chúc Mừng Năm Mới 2026 🎉</h1>
+        <p>❤️Năm cũ đã qua năm mới bắt đầu ❤️</p>
+    </div>
+
+    <div class="slide">
+        <h1>🌸 Xuân 2026 🌸</h1>
+        <p>Chúc em luôn xinh đẹp, hạnh phúc và thành công trong mọi điều.</p>
+    </div>
+
+    <div class="slide">
+        <h1>💖 Năm mới mong em luôn cười thật nhiêu 💖</h1>
+        <p>Dù năm 2026 hay nhiều năm sau nữa, hy vọng em sẽ luôn vui vẻ và hạnh phúc.</p>
+    </div>
+
+    <div class="slide">
+        <h1>❤️ Mong rằng mỗi ngày trôi qua đều nhẹ nhàng với em ❤️</h1>
+	<h1>HAPPY NEW YEAR MINH TRÂM<h1>
+    </div>
+</div>
+
+<script>
+// ===== SLIDE AUTO =====
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+setInterval(()=>{
+    slides.forEach(s=>s.classList.remove("active"));
+    index = (index+1)%slides.length;
+    slides[index].classList.add("active");
+},4000);
+
+// ===== HEART FLOAT =====
+function createHeart(){
+    const heart=document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML="❤️";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=Math.random()*20+15+"px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),6000);
+}
+setInterval(createHeart,500);
+
+// ===== FIREWORKS =====
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+
+function createFirework(){
+    let x=Math.random()*canvas.width;
+    let y=Math.random()*canvas.height/2;
+    let count=80;
+
+    for(let i=0;i<count;i++){
+        particles.push({
+            x:x,
+            y:y,
+            angle:Math.random()*2*Math.PI,
+            speed:Math.random()*5+2,
+            radius:2,
+            alpha:1
+        });
+    }
+}
+
+function update(){
+    ctx.fillStyle="rgba(0,0,0,0.2)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    particles.forEach((p,i)=>{
+        p.x+=Math.cos(p.angle)*p.speed;
+        p.y+=Math.sin(p.angle)*p.speed;
+        p.alpha-=0.01;
+
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
+        ctx.fillStyle="rgba(255,255,255,"+p.alpha+")";
+        ctx.fill();
+
+        if(p.alpha<=0){
+            particles.splice(i,1);
+        }
+    });
+
+    requestAnimationFrame(update);
+}
+
+setInterval(createFirework,1500);
+update();
+
+window.addEventListener("resize",()=>{
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+});
+</script>
+
+</body>
+</html>
